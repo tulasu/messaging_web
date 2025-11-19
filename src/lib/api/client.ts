@@ -2,6 +2,7 @@ import { API_BASE_URL } from '$lib/config';
 import type {
 	BatchSendResponse,
 	MessageAttempt,
+	MessageHistory,
 	MessengerKind,
 	MessengerToken,
 	PaginatedChatsResponse,
@@ -134,6 +135,17 @@ export class ApiClient {
 		return this.request<PaginatedChatsResponse>(
 			`/messengers/${messenger}/chats?${params.toString()}`
 		);
+	}
+
+	getMessage(messageId: string) {
+		return this.request<MessageHistory>(`/messages/${messageId}`);
+	}
+
+	retryMessage(messageId: string) {
+		return this.request<{ success: boolean }>('/messages/actions/retry', {
+			method: 'POST',
+			body: JSON.stringify({ message_id: messageId })
+		});
 	}
 }
 
