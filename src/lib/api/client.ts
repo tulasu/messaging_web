@@ -74,7 +74,18 @@ export class ApiClient {
 			return undefined as T;
 		}
 
-		return (await response.json()) as T;
+		const contentType = response.headers.get('content-type');
+		const text = await response.text();
+
+		if (!text || text.trim() === '') {
+			return undefined as T;
+		}
+
+		if (contentType && contentType.includes('application/json')) {
+			return JSON.parse(text) as T;
+		}
+
+		return undefined as T;
 	}
 
 	login(email: string, displayName?: string | null) {
@@ -142,7 +153,7 @@ export class ApiClient {
 	}
 
 	retryMessage(messageId: string) {
-		return this.request<{ success: boolean }>('/messages/actions/retry', {
+		return this.request<void>('/messages/actions/retry', {
 			method: 'POST',
 			body: JSON.stringify({ message_id: messageId })
 		});

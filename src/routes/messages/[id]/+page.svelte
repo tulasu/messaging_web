@@ -80,10 +80,19 @@
 
 		try {
 			await client.retryMessage(message.id);
-			const refreshed = await client.getMessage(message.id);
-			message = refreshed;
-			upsertMessages([refreshed]);
-			attempts = await client.getMessageAttempts(message.id);
+			try {
+				const refreshed = await client.getMessage(message.id);
+				message = refreshed;
+				upsertMessages([refreshed]);
+				attempts = await client.getMessageAttempts(message.id);
+			} catch (refreshErr) {
+				if (refreshErr instanceof ApiError && refreshErr.status === 401) {
+					setGuest();
+					await goto('/');
+					return;
+				}
+				console.error('Failed to refresh message after retry:', refreshErr);
+			}
 		} catch (err) {
 			if (err instanceof ApiError && err.status === 401) {
 				setGuest();
