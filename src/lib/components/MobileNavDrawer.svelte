@@ -5,6 +5,7 @@
 	export let onClose: () => void = () => {};
 	export let onNavigate: (path: string) => void = () => {};
 	export let onLogout: () => void = () => {};
+	export let displayName: string | undefined = undefined;
 
 	const navLinks = [
 		{ label: m.messages_title(), path: '/messages' },
@@ -18,7 +19,12 @@
 		<div class="flex-1 bg-slate-900/40" onclick={onClose}></div>
 		<aside class="flex w-72 flex-col bg-white p-6 shadow-2xl">
 			<div class="mb-6 flex items-center justify-between">
-				<p class="text-lg font-semibold text-slate-900">{m.app_title()}</p>
+				<div class="flex-1">
+					<p class="text-lg font-semibold text-slate-900">{m.app_title()}</p>
+					{#if displayName}
+						<p class="text-sm text-slate-500">{displayName}</p>
+					{/if}
+				</div>
 				<button
 					type="button"
 					class="rounded-lg border border-slate-200 p-2 text-slate-600 hover:bg-slate-50"

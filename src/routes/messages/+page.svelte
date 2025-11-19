@@ -5,7 +5,7 @@
 	import MobileNavDrawer from '$lib/components/MobileNavDrawer.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 	import { clearMessages, upsertMessages } from '$lib/stores/messages';
-	import { setGuest } from '$lib/stores/session';
+	import { session, setGuest } from '$lib/stores/session';
 	import { formatDateTime, messengerLabel, statusColor, statusLabel } from '$lib/utils/format';
 	import { onMount } from 'svelte';
 
@@ -101,6 +101,11 @@
 				<div>
 					<h1 class="text-2xl font-semibold text-slate-900">{m.messages_title()}</h1>
 					<p class="text-sm text-slate-500">{m.messages_subtitle()}</p>
+					{#if $session.displayName}
+						<p class="mt-1 text-xs text-slate-400">
+							{m.messages_user_label()}: {$session.displayName}
+						</p>
+					{/if}
 				</div>
 				<div class="hidden flex-wrap gap-3 md:flex">
 					<button
@@ -135,10 +140,8 @@
 				navOpen = false;
 				void goto(path);
 			}}
-			onLogout={async () => {
-				navOpen = false;
-				await handleLogout();
-			}}
+			onLogout={handleLogout}
+			displayName={$session.displayName}
 		/>
 
 		{#if !initialised && loading}

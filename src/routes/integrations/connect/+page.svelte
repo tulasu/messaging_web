@@ -4,7 +4,7 @@
 	import type { MessengerKind, MessengerToken } from '$lib/api/types';
 	import { m } from '$lib/paraglide/messages.js';
 	import { messengerLabel, formatDateTime } from '$lib/utils/format';
-	import { setGuest } from '$lib/stores/session';
+	import { session, setGuest } from '$lib/stores/session';
 	import { onMount } from 'svelte';
 	import MobileNavDrawer from '$lib/components/MobileNavDrawer.svelte';
 
@@ -136,6 +136,7 @@
 				navOpen = false;
 				void goto(path);
 			}}
+			displayName={$session.displayName}
 			onLogout={async () => {
 				navOpen = false;
 				await handleLogout();

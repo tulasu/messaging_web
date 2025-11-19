@@ -42,8 +42,9 @@
 
 		submitting = true;
 		try {
-			await client.login(trimmedEmail, displayName.trim() || undefined);
-			setAuthenticated(trimmedEmail);
+			const trimmedDisplayName = displayName.trim() || undefined;
+			await client.login(trimmedEmail, trimmedDisplayName);
+			setAuthenticated(trimmedEmail, trimmedDisplayName);
 			await goto('/messages');
 		} catch (err) {
 			if (err instanceof ApiError && err.status === 401) {

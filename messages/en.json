@@ -19,6 +19,7 @@
 	"messages_title": "Message history",
 	"messages_subtitle": "Telegram, VK and MAX in one list",
 	"messages_inbox_label": "Inbox",
+	"messages_user_label": "User",
 	"messages_integrations_button": "Integrations",
 	"messages_create_button": "Create message",
 	"messages_logout_button": "Log out",

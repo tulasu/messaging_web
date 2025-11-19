@@ -5,7 +5,7 @@
 	import type { MessageAttempt, MessageHistory } from '$lib/api/types';
 	import { m } from '$lib/paraglide/messages.js';
 	import { getMessageFromStore, upsertMessages } from '$lib/stores/messages';
-	import { setGuest } from '$lib/stores/session';
+	import { session, setGuest } from '$lib/stores/session';
 	import { formatDateTime, messengerLabel, statusColor, statusLabel } from '$lib/utils/format';
 	import MobileNavDrawer from '$lib/components/MobileNavDrawer.svelte';
 	import { onDestroy } from 'svelte';
@@ -132,6 +132,7 @@
 				navOpen = false;
 				void goto(path);
 			}}
+			displayName={$session.displayName}
 			onLogout={async () => {
 				navOpen = false;
 				await handleLogout();
