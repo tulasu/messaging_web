@@ -1,5 +1,6 @@
 import { API_BASE_URL } from '$lib/config';
 import type {
+	BatchSendResponse,
 	MessageAttempt,
 	MessengerKind,
 	MessengerToken,
@@ -98,6 +99,13 @@ export class ApiClient {
 		return this.request<{ message_id: string }>('/messages', {
 			method: 'POST',
 			body: JSON.stringify(payload)
+		});
+	}
+
+	batchSend(messages: SendMessagePayload[]) {
+		return this.request<BatchSendResponse>('/messages/batch', {
+			method: 'POST',
+			body: JSON.stringify({ messages })
 		});
 	}
 

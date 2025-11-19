@@ -73,3 +73,17 @@ export interface RegisterTokenPayload {
 	access_token: string;
 	refresh_token?: string;
 }
+
+export interface BatchSendItemResult {
+	index: number;
+	success: boolean;
+	message_id: string | null;
+	error: string | null;
+}
+
+export interface BatchSendResponse {
+	results: BatchSendItemResult[];
+	total: number;
+	successful: number;
+	failed: number;
+}

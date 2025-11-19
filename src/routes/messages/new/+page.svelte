@@ -1,7 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { createApiClient, ApiError } from '$lib/api/client';
-	import type { ChatSummary, MessengerKind, MessengerToken } from '$lib/api/types';
+	import type {
+		BatchSendItemResult,
+		ChatSummary,
+		MessengerKind,
+		MessengerToken
+	} from '$lib/api/types';
 	import { m } from '$lib/paraglide/messages.js';
 	import { messengerLabel, chatTypeLabel } from '$lib/utils/format';
 	import { session, setGuest } from '$lib/stores/session';
@@ -25,8 +30,20 @@
 	let successMessage = '';
 	let submitting = false;
 	let navOpen = false;
+	let recipients: RecipientEntry[] = [];
+	let batchResults: BatchResultEntry[] = [];
 
 	const allMessengers: MessengerKind[] = ['telegram', 'vk'];
+
+	type RecipientEntry = {
+		id: string;
+		messenger: MessengerKind;
+		chatId: string;
+		chatTitle: string;
+		chatType: ChatSummary['chat_type'];
+	};
+
+	type BatchResultEntry = BatchSendItemResult & { recipient?: RecipientEntry };
 
 	onMount(() => {
 		void loadTokens();
@@ -95,31 +112,94 @@
 		chats = [];
 		chatsOffset = 0;
 		chatsHasMore = false;
+		batchResults = [];
 		if (selectedMessenger) {
 			void loadChats(true);
 		}
+	}
+
+	function addRecipient() {
+		errorMessage = '';
+		if (!selectedMessenger || !selectedChat) {
+			errorMessage = m.message_new_error_required();
+			return;
+		}
+		if (
+			recipients.some(
+				(entry) => entry.messenger === selectedMessenger && entry.chatId === selectedChat
+			)
+		) {
+			errorMessage = m.message_new_recipient_duplicate();
+			return;
+		}
+		const chat = chats.find((c) => c.chat_id === selectedChat);
+		const id =
+			typeof crypto !== 'undefined' && 'randomUUID' in crypto
+				? crypto.randomUUID()
+				: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+		recipients = [
+			...recipients,
+			{
+				id,
+				messenger: selectedMessenger,
+				chatId: selectedChat,
+				chatTitle: chat?.title ?? selectedChat,
+				chatType: chat?.chat_type ?? 'unknown'
+			}
+		];
+		selectedChat = '';
+		batchResults = [];
+	}
+
+	function removeRecipient(id: string) {
+		recipients = recipients.filter((entry) => entry.id !== id);
 	}
 
 	async function handleSubmit(event: SubmitEvent) {
 		event.preventDefault();
 		errorMessage = '';
 		successMessage = '';
+		batchResults = [];
 
-		if (!selectedMessenger || !selectedChat || !messageText.trim()) {
+		const trimmedText = messageText.trim();
+
+		if (!trimmedText || recipients.length === 0) {
 			errorMessage = m.message_new_error_required();
 			return;
 		}
 
+		const payloads = recipients.map((entry) => ({
+			messenger: entry.messenger,
+			recipient: entry.chatId,
+			text: trimmedText
+		}));
+
 		submitting = true;
 		try {
-			const response = await client.sendMessage({
-				messenger: selectedMessenger,
-				recipient: selectedChat,
-				text: messageText.trim()
-			});
-			successMessage = m.message_new_success();
-			messageText = '';
-			await goto(`/messages/${response.message_id}`);
+			if (payloads.length === 1) {
+				const response = await client.sendMessage(payloads[0]);
+				messageText = '';
+				recipients = [];
+				selectedMessenger = '';
+				selectedChat = '';
+				await goto(`/messages/${response.message_id}`);
+			} else {
+				const response = await client.batchSend(payloads);
+				batchResults = response.results.map((result) => ({
+					...result,
+					recipient: recipients[result.index] ?? undefined
+				}));
+				successMessage = m.message_new_batch_success({
+					successful: response.successful,
+					total: response.total
+				});
+				errorMessage =
+					response.failed > 0 ? m.message_new_batch_failed({ failed: response.failed }) : '';
+				messageText = '';
+				recipients = [];
+				selectedMessenger = '';
+				selectedChat = '';
+			}
 		} catch (err) {
 			if (err instanceof ApiError && err.status === 401) {
 				setGuest();
@@ -278,20 +358,68 @@
 											{/each}
 										</select>
 									</label>
-									{#if chatsHasMore}
+									<div class="flex flex-wrap gap-3">
 										<button
 											type="button"
-											class="w-full rounded-2xl border border-dashed border-slate-300 bg-white py-2 text-sm font-semibold text-slate-600"
-											onclick={() => loadChats()}
-											disabled={chatsLoading}
+											class="rounded-2xl bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-red-500 disabled:cursor-not-allowed disabled:bg-red-200"
+											onclick={addRecipient}
+											disabled={!selectedChat}
 										>
-											{chatsLoading
-												? m.message_new_loading_recipients()
-												: m.message_new_load_more_recipients()}
+											{m.message_new_add_recipient()}
 										</button>
-									{/if}
+										{#if chatsHasMore}
+											<button
+												type="button"
+												class="rounded-2xl border border-dashed border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-600"
+												onclick={() => loadChats()}
+												disabled={chatsLoading}
+											>
+												{chatsLoading
+													? m.message_new_loading_recipients()
+													: m.message_new_load_more_recipients()}
+											</button>
+										{/if}
+									</div>
 								</div>
 							{/if}
+
+							<div class="rounded-2xl border border-slate-200 p-4">
+								<div class="flex items-center justify-between">
+									<h3 class="text-sm font-semibold text-slate-700">
+										{m.message_new_recipients_title()}
+									</h3>
+									{#if recipients.length > 0}
+										<span class="text-xs text-slate-500">{recipients.length}</span>
+									{/if}
+								</div>
+								{#if recipients.length === 0}
+									<p class="mt-3 text-sm text-slate-500">{m.message_new_recipients_empty()}</p>
+								{:else}
+									<ul class="mt-3 space-y-3">
+										{#each recipients as recipient (recipient.id)}
+											<li
+												class="flex items-center justify-between rounded-2xl bg-slate-50 px-4 py-3 text-sm"
+											>
+												<div>
+													<p class="font-semibold text-slate-900">
+														{messengerLabel[recipient.messenger]} · {recipient.chatTitle}
+													</p>
+													<p class="text-xs text-slate-500">
+														{chatTypeLabel[recipient.chatType]}
+													</p>
+												</div>
+												<button
+													type="button"
+													class="rounded-xl border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-500 hover:border-rose-200 hover:text-rose-600"
+													onclick={() => removeRecipient(recipient.id)}
+												>
+													{m.message_new_remove_recipient()}
+												</button>
+											</li>
+										{/each}
+									</ul>
+								{/if}
+							</div>
 
 							<label class="block text-sm font-semibold text-slate-700">
 								{m.message_new_body_label()}
@@ -326,6 +454,47 @@
 									{m.message_new_tokens_manage()}
 								</button>
 							</div>
+							{#if batchResults.length > 0}
+								<div class="rounded-2xl border border-slate-200 p-4">
+									<h3 class="text-sm font-semibold text-slate-700">
+										{m.message_new_batch_results_title()}
+									</h3>
+									<ul class="mt-3 space-y-3">
+										{#each batchResults as result (result.index)}
+											<li class="rounded-2xl border border-slate-100 px-4 py-3 text-sm">
+												<div class="flex items-center justify-between gap-3">
+													<div>
+														<p class="font-semibold text-slate-900">
+															{result.recipient
+																? `${messengerLabel[result.recipient.messenger]} · ${result.recipient.chatTitle}`
+																: m.message_new_batch_result_unknown()}
+														</p>
+														<p class="text-xs text-slate-500">
+															{m.message_new_batch_result_index({
+																index: result.index + 1
+															})}
+														</p>
+													</div>
+													<span
+														class={`rounded-full px-3 py-1 text-xs font-semibold ${
+															result.success
+																? 'bg-emerald-50 text-emerald-700'
+																: 'bg-rose-50 text-rose-700'
+														}`}
+													>
+														{result.success
+															? m.message_new_batch_result_success()
+															: m.message_new_batch_result_failed()}
+													</span>
+												</div>
+												{#if !result.success && result.error}
+													<p class="mt-2 text-xs text-rose-600">{result.error}</p>
+												{/if}
+											</li>
+										{/each}
+									</ul>
+								</div>
+							{/if}
 						</form>
 					{/if}
 				</div>
