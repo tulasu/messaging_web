@@ -98,7 +98,7 @@
 				<div class="rounded-3xl bg-white p-6 shadow-sm">
 					<div class="flex flex-wrap items-center justify-between gap-4">
 						<div>
-							<p class="text-sm tracking-[0.3em] text-emerald-500 uppercase">
+							<p class="text-sm tracking-[0.3em] text-red-500 uppercase">
 								{messengerLabel[message.messenger]}
 							</p>
 							<h1 class="mt-2 text-3xl font-semibold text-slate-900">

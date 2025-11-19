@@ -14,13 +14,13 @@ export const messengerLabel = {
 } as const;
 
 export const statusColor = {
-	Pending: 'bg-amber-100 text-amber-900',
-	Scheduled: 'bg-sky-100 text-sky-900',
-	InFlight: 'bg-indigo-100 text-indigo-900',
-	Sent: 'bg-emerald-100 text-emerald-900',
-	Retrying: 'bg-purple-100 text-purple-900',
-	Failed: 'bg-rose-100 text-rose-900',
-	Cancelled: 'bg-gray-200 text-gray-800'
+	Pending: 'bg-amber-50 text-amber-700',
+	Scheduled: 'bg-sky-50 text-sky-700',
+	InFlight: 'bg-indigo-50 text-indigo-700',
+	Sent: 'bg-emerald-50 text-emerald-700',
+	Retrying: 'bg-purple-50 text-purple-700',
+	Failed: 'bg-rose-100 text-rose-700',
+	Cancelled: 'bg-gray-100 text-gray-600'
 } as const;
 
 export const statusLabel = {

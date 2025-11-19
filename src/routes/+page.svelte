@@ -68,7 +68,7 @@
 <div class="min-h-screen bg-slate-900 text-white">
 	<div class="mx-auto flex max-w-lg flex-col gap-10 px-4 py-10">
 		<header class="space-y-4">
-			<p class="text-sm tracking-[0.3em] text-emerald-300 uppercase">{m.app_title()}</p>
+			<p class="text-sm tracking-[0.3em] text-red-300 uppercase">{m.app_title()}</p>
 			<h1 class="text-4xl leading-tight font-semibold">{m.app_subtitle()}</h1>
 			<p class="text-slate-300">{m.app_description()}</p>
 		</header>
@@ -78,7 +78,7 @@
 				<label class="block text-sm font-medium text-slate-200">
 					{m.email_label()}
 					<input
-						class="mt-2 w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-base text-white placeholder:text-white/40 focus:border-emerald-300 focus:ring-2 focus:ring-emerald-400/50 focus:outline-none"
+						class="mt-2 w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-base text-white placeholder:text-white/40 focus:border-red-400 focus:ring-2 focus:ring-red-500/50 focus:outline-none"
 						type="email"
 						placeholder={m.email_placeholder()}
 						bind:value={email}
@@ -87,7 +87,7 @@
 
 				<button
 					type="button"
-					class="text-sm font-medium text-emerald-300 underline-offset-4 hover:underline"
+					class="text-sm font-medium text-red-300 underline-offset-4 hover:underline"
 					onclick={() => (showDisplayName = !showDisplayName)}
 				>
 					{showDisplayName ? m.display_name_toggle_hide() : m.display_name_toggle_show()}
@@ -98,7 +98,7 @@
 					<label class="block text-sm font-medium text-slate-200">
 						{m.display_name_label()}
 						<input
-							class="mt-2 w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-base text-white placeholder:text-white/40 focus:border-emerald-300 focus:ring-2 focus:ring-emerald-400/50 focus:outline-none"
+							class="mt-2 w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-base text-white placeholder:text-white/40 focus:border-red-400 focus:ring-2 focus:ring-red-500/50 focus:outline-none"
 							type="text"
 							placeholder={m.display_name_placeholder()}
 							bind:value={displayName}
@@ -112,7 +112,7 @@
 
 				<button
 					type="submit"
-					class="w-full rounded-2xl bg-emerald-400 py-3 text-center text-base font-semibold text-emerald-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-70"
+					class="w-full rounded-2xl bg-red-600 py-3 text-center text-base font-semibold text-red-50 transition hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-70"
 					disabled={submitting}
 				>
 					{submitting ? m.login_loading() : m.login_button()}

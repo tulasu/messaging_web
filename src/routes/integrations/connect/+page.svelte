@@ -93,7 +93,7 @@
 
 		<section class="rounded-3xl bg-white p-6 shadow-sm">
 			<header class="space-y-2">
-				<p class="text-sm tracking-[0.3em] text-emerald-500 uppercase">
+				<p class="text-sm tracking-[0.3em] text-red-500 uppercase">
 					{m.integrations_subtitle()}
 				</p>
 				<h1 class="text-2xl font-semibold text-slate-900">{m.integrations_title()}</h1>
@@ -106,7 +106,7 @@
 						<h2 class="text-lg font-semibold text-slate-900">{m.integrations_connected_title()}</h2>
 						<button
 							type="button"
-							class="text-sm font-semibold text-emerald-600"
+							class="text-sm font-semibold text-red-600"
 							onclick={() => loadTokens()}
 						>
 							{m.integrations_refresh()}
@@ -136,7 +136,7 @@
 										<span
 											class={`rounded-full px-3 py-1 text-xs font-semibold ${
 												token.status === 'Active'
-													? 'bg-emerald-100 text-emerald-900'
+													? 'bg-red-100 text-red-900'
 													: 'bg-slate-200 text-slate-600'
 											}`}
 										>
@@ -156,7 +156,7 @@
 					<label class="block text-sm font-semibold text-slate-700">
 						{m.integrations_messenger_label()}
 						<select
-							class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 focus:outline-none"
+							class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 focus:border-red-400 focus:ring-2 focus:ring-red-100 focus:outline-none"
 							bind:value={messenger}
 						>
 							<option value="telegram">{m.messenger_telegram()}</option>
@@ -167,7 +167,7 @@
 					<label class="block text-sm font-semibold text-slate-700">
 						{m.integrations_access_token_label()}
 						<input
-							class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 focus:outline-none"
+							class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 focus:border-red-400 focus:ring-2 focus:ring-red-100 focus:outline-none"
 							type="text"
 							placeholder="..."
 							bind:value={accessToken}
@@ -177,7 +177,7 @@
 					<label class="block text-sm font-semibold text-slate-700">
 						{m.integrations_refresh_token_label()}
 						<input
-							class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 focus:outline-none"
+							class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 focus:border-red-400 focus:ring-2 focus:ring-red-100 focus:outline-none"
 							type="text"
 							placeholder="..."
 							bind:value={refreshToken}
@@ -188,12 +188,12 @@
 						<p class="text-sm text-rose-500">{errorMessage}</p>
 					{/if}
 					{#if successMessage}
-						<p class="text-sm text-emerald-600">{successMessage}</p>
+						<p class="text-sm text-red-500">{successMessage}</p>
 					{/if}
 
 					<button
 						type="submit"
-						class="w-full rounded-2xl bg-emerald-500 px-6 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:bg-emerald-200"
+						class="w-full rounded-2xl bg-red-600 px-6 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-red-500 disabled:cursor-not-allowed disabled:bg-red-200"
 						disabled={submitting}
 					>
 						{submitting ? m.integrations_submitting() : m.integrations_submit()}

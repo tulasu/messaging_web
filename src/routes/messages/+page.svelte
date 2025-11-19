@@ -77,7 +77,7 @@
 		<header class="space-y-2 rounded-3xl bg-white px-6 py-5 shadow-sm">
 			<div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 				<div>
-					<p class="text-sm tracking-[0.3em] text-emerald-500 uppercase">
+					<p class="text-sm tracking-[0.3em] text-red-500 uppercase">
 						{m.messages_inbox_label()}
 					</p>
 					<h1 class="text-2xl font-semibold text-slate-900">{m.messages_title()}</h1>
@@ -86,21 +86,21 @@
 				<div class="flex flex-wrap gap-3">
 					<button
 						type="button"
-						class="rounded-2xl border border-slate-200 px-5 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300"
+						class="rounded-2xl border border-slate-200 bg-slate-900 px-5 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-800"
 						onclick={() => void goto('/integrations/connect')}
 					>
 						{m.messages_integrations_button()}
 					</button>
 					<button
 						type="button"
-						class="rounded-2xl bg-emerald-500 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-400"
+						class="rounded-2xl bg-red-600 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-red-500"
 						onclick={() => void goto('/messages/new')}
 					>
 						{m.messages_create_button()}
 					</button>
 					<button
 						type="button"
-						class="rounded-2xl border border-transparent px-5 py-2 text-sm font-semibold text-slate-500 transition hover:text-slate-900"
+						class="rounded-2xl border border-transparent px-5 py-2 text-sm font-semibold text-slate-400 transition hover:text-slate-200"
 						onclick={handleLogout}
 					>
 						{m.messages_logout_button()}
@@ -124,7 +124,7 @@
 				{#each messages as message (message.id)}
 					<li>
 						<button
-							class="w-full rounded-3xl border border-slate-100 bg-white p-5 text-left transition hover:border-emerald-200 hover:shadow-md"
+							class="w-full rounded-3xl border border-slate-100 bg-white p-5 text-left transition hover:border-red-200 hover:shadow-md"
 							onclick={() => openDetails(message.id)}
 						>
 							<div class="flex flex-wrap items-center justify-between gap-3 text-sm text-slate-500">
@@ -155,7 +155,7 @@
 
 			{#if hasMore}
 				<button
-					class="mt-6 w-full rounded-2xl border border-dashed border-slate-300 bg-white py-3 text-sm font-semibold text-slate-600 transition hover:border-emerald-200 hover:text-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
+					class="mt-6 w-full rounded-2xl border border-dashed border-slate-300 bg-white py-3 text-sm font-semibold text-slate-600 transition hover:border-red-200 hover:text-red-500 disabled:cursor-not-allowed disabled:opacity-50"
 					onclick={() => loadMessages()}
 					disabled={loading}
 				>

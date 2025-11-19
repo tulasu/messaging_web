@@ -149,7 +149,7 @@
 
 		<section class="rounded-3xl bg-white p-6 shadow-sm">
 			<header class="space-y-2">
-				<p class="text-sm tracking-[0.3em] text-emerald-500 uppercase">
+				<p class="text-sm tracking-[0.3em] text-red-500 uppercase">
 					{m.message_new_subtitle()}
 				</p>
 				<h1 class="text-2xl font-semibold text-slate-900">{m.message_new_title()}</h1>
@@ -170,7 +170,7 @@
 									<div>
 										<p class="font-semibold text-slate-900">{messengerLabel[option]}</p>
 										{#if connectedMessengers().includes(option)}
-											<p class="text-sm text-emerald-500">{m.message_new_connected()}</p>
+											<p class="text-sm text-red-500">{m.message_new_connected()}</p>
 										{:else}
 											<p class="text-sm text-slate-500">{m.message_new_not_connected()}</p>
 										{/if}
@@ -198,7 +198,7 @@
 							<label class="block text-sm font-semibold text-slate-700">
 								{m.message_new_channel_label()}
 								<select
-									class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 focus:outline-none"
+									class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 focus:border-red-400 focus:ring-2 focus:ring-red-100 focus:outline-none"
 									bind:value={selectedMessenger}
 									onchange={(event) =>
 										handleMessengerChange((event.target as HTMLSelectElement).value)}
@@ -215,7 +215,7 @@
 									<label class="block text-sm font-semibold text-slate-700">
 										{m.message_new_recipient_label()}
 										<select
-											class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 focus:outline-none"
+											class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 focus:border-red-400 focus:ring-2 focus:ring-red-100 focus:outline-none"
 											bind:value={selectedChat}
 										>
 											<option value="">{m.message_new_recipient_placeholder()}</option>
@@ -245,7 +245,7 @@
 								{m.message_new_body_label()}
 								<textarea
 									rows="6"
-									class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 focus:outline-none"
+									class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 focus:border-red-400 focus:ring-2 focus:ring-red-100 focus:outline-none"
 									placeholder={m.message_new_body_placeholder()}
 									bind:value={messageText}
 								></textarea>
@@ -255,13 +255,13 @@
 								<p class="text-sm text-rose-500">{errorMessage}</p>
 							{/if}
 							{#if successMessage}
-								<p class="text-sm text-emerald-600">{successMessage}</p>
+								<p class="text-sm text-red-500">{successMessage}</p>
 							{/if}
 
 							<div class="flex flex-wrap gap-3">
 								<button
 									type="submit"
-									class="flex-1 rounded-2xl bg-emerald-500 px-6 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:bg-emerald-200"
+									class="flex-1 rounded-2xl bg-red-600 px-6 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-red-500 disabled:cursor-not-allowed disabled:bg-red-200"
 									disabled={submitting}
 								>
 									{submitting ? m.message_new_submitting() : m.message_new_submit()}
