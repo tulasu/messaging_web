@@ -1,32 +1,12 @@
-# Messaging Web UI
+# Messaging Web
 
-SvelteKit клиент для сервиса рассылок (`messaging`). Интерфейс mobile-first, Tailwind 4.0 + формы/типографика, cookies-based auth.
+![SvelteKit](https://img.shields.io/badge/SvelteKit-FF3E00?logo=svelte&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)
 
-## Старт
+A modern, mobile-first web client for the TulaSU messaging service built with SvelteKit, TypeScript, and Tailwind CSS.
 
-```bash
-pnpm install
-cp .env.example .env # задайте URL API
-pnpm dev
-```
+## License
 
-`PUBLIC_API_BASE_URL` — полный URL Rust API. Клиент ходит с `credentials: include`, поэтому домен должен совпадать или поддерживать CORS+cookies.
-
-## Основные экраны
-
-- `GET /` — вход по e-mail + опциональный display_name. После логина сервер ставит `access_token`/`refresh_token`.
-- `/messages` — история пользователя. Пагинация ленивой загрузкой, карточки статусов.
-- `/messages/[id]` — детальная карточка + временная шкала попыток (`/messages/:id/attempts`).
-- `/messages/new` — создание сообщения: выбор подключенного мессенджера, пагинируемый список чатов, textarea.
-- `/integrations/connect` — управление токенами (`/messengers/tokens`).
-
-401 на любом запросе триггерит фоновой `POST /auth/refresh`, после чего повторяется исходный запрос. Провал refresh → редирект на страницу входа.
-
-## Скрипты
-
-| Команда      | Назначение            |
-| ------------ | --------------------- |
-| `pnpm dev`   | dev-сервер SvelteKit  |
-| `pnpm lint`  | prettier + eslint     |
-| `pnpm check` | `svelte-check` + типы |
-| `pnpm build` | прод-бандел           |
+See [LICENSE](../LICENSE) file for details.
