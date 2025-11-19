@@ -61,6 +61,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>{m.page_title_login()}</title>
+</svelte:head>
+
 <div class="min-h-screen bg-slate-900 text-white">
 	<div class="mx-auto flex max-w-lg flex-col gap-10 px-4 py-10">
 		<header class="space-y-4">

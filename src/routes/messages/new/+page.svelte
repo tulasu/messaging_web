@@ -132,6 +132,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>{m.page_title_message_new()}</title>
+</svelte:head>
+
 <div class="min-h-screen bg-slate-50 px-4 py-6 sm:px-6">
 	<div class="mx-auto flex max-w-3xl flex-col gap-6">
 		<button

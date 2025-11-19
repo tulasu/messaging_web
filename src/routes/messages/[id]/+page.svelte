@@ -68,6 +68,14 @@
 	}
 </script>
 
+<svelte:head>
+	<title>
+		{message
+			? m.page_title_message_detail({ id: message.id.slice(0, 8) })
+			: m.page_title_message_detail({ id: messageId.slice(0, 8) || '...' })}
+	</title>
+</svelte:head>
+
 <div class="min-h-screen bg-slate-50 px-4 py-6 sm:px-6">
 	<div class="mx-auto flex max-w-3xl flex-col gap-6">
 		<button
@@ -144,7 +152,7 @@
 												class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 font-semibold text-slate-700"
 												>{attempt.attempt_number}</span
 											>
-											<div>
+											<div class="flex flex-col gap-1">
 												<p class="text-xs text-slate-400 uppercase">
 													{m.message_detail_status_label()}
 												</p>
