@@ -14,6 +14,8 @@
 	"login_error_email_required": "Введите e-mail",
 	"login_error_auth_rejected": "Авторизация отклонена",
 	"login_error_generic": "Что-то пошло не так. Попробуйте ещё раз.",
+	"nav_menu_label": "Открыть меню",
+	"nav_menu_close": "Закрыть меню",
 	"messages_title": "История сообщений",
 	"messages_subtitle": "Telegram, VK и MAX в одном списке",
 	"messages_inbox_label": "Inbox",

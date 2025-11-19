@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { createApiClient, ApiError } from '$lib/api/client';
 	import type { MessageHistory } from '$lib/api/types';
+	import MobileNavDrawer from '$lib/components/MobileNavDrawer.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 	import { clearMessages, upsertMessages } from '$lib/stores/messages';
 	import { setGuest } from '$lib/stores/session';
@@ -17,6 +18,7 @@
 	let errorMessage = '';
 	let hasMore = false;
 	let nextOffset: number | null = 0;
+	let navOpen = false;
 
 	onMount(() => {
 		clearMessages();
@@ -76,14 +78,31 @@
 	<div class="mx-auto flex max-w-4xl flex-col gap-6">
 		<header class="space-y-2 rounded-3xl bg-white px-6 py-5 shadow-sm">
 			<div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-				<div>
+				<div class="flex items-start justify-between gap-3">
 					<p class="text-sm tracking-[0.3em] text-red-500 uppercase">
 						{m.messages_inbox_label()}
 					</p>
+					<button
+						type="button"
+						class="rounded-xl border border-slate-200 p-2 text-slate-600 transition hover:bg-slate-50 md:hidden"
+						onclick={() => (navOpen = true)}
+						aria-label={m.nav_menu_label()}
+					>
+						<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M4 6h16M4 12h16M4 18h16"
+							/>
+						</svg>
+					</button>
+				</div>
+				<div>
 					<h1 class="text-2xl font-semibold text-slate-900">{m.messages_title()}</h1>
 					<p class="text-sm text-slate-500">{m.messages_subtitle()}</p>
 				</div>
-				<div class="flex flex-wrap gap-3">
+				<div class="hidden flex-wrap gap-3 md:flex">
 					<button
 						type="button"
 						class="rounded-2xl border border-slate-200 bg-slate-900 px-5 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-800"
@@ -108,6 +127,19 @@
 				</div>
 			</div>
 		</header>
+
+		<MobileNavDrawer
+			open={navOpen}
+			onClose={() => (navOpen = false)}
+			onNavigate={(path) => {
+				navOpen = false;
+				void goto(path);
+			}}
+			onLogout={async () => {
+				navOpen = false;
+				await handleLogout();
+			}}
+		/>
 
 		{#if !initialised && loading}
 			<div class="rounded-3xl bg-white p-6 text-center text-slate-500 shadow-sm">

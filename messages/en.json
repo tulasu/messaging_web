@@ -14,6 +14,8 @@
 	"login_error_email_required": "Enter e-mail",
 	"login_error_auth_rejected": "Authorization rejected",
 	"login_error_generic": "Something went wrong. Please try again.",
+	"nav_menu_label": "Open navigation",
+	"nav_menu_close": "Close navigation",
 	"messages_title": "Message history",
 	"messages_subtitle": "Telegram, VK and MAX in one list",
 	"messages_inbox_label": "Inbox",
