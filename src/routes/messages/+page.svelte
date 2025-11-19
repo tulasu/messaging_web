@@ -72,7 +72,7 @@
 	<title>{m.page_title_messages()}</title>
 </svelte:head>
 
-<div class="min-h-screen bg-slate-50 px-4 py-6 sm:px-6">
+<div class="px-4 py-6 sm:px-6 lg:px-8">
 	<div class="mx-auto flex max-w-4xl flex-col gap-6">
 		<header class="space-y-2 rounded-3xl bg-white px-6 py-5 shadow-sm">
 			<div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">

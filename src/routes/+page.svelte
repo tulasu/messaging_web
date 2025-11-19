@@ -7,7 +7,6 @@
 
 	let email = '';
 	let displayName = '';
-	let showDisplayName = false;
 	let submitting = false;
 	let errorMessage = '';
 
@@ -43,10 +42,7 @@
 
 		submitting = true;
 		try {
-			await client.login(
-				trimmedEmail,
-				showDisplayName ? displayName.trim() || undefined : undefined
-			);
+			await client.login(trimmedEmail, displayName.trim() || undefined);
 			setAuthenticated(trimmedEmail);
 			await goto('/messages');
 		} catch (err) {
@@ -85,26 +81,15 @@
 					/>
 				</label>
 
-				<button
-					type="button"
-					class="text-sm font-medium text-red-300 underline-offset-4 hover:underline"
-					onclick={() => (showDisplayName = !showDisplayName)}
-				>
-					{showDisplayName ? m.display_name_toggle_hide() : m.display_name_toggle_show()}
+				<label class="block text-sm font-medium text-slate-200">
 					{m.display_name_label()}
-				</button>
-
-				{#if showDisplayName}
-					<label class="block text-sm font-medium text-slate-200">
-						{m.display_name_label()}
-						<input
-							class="mt-2 w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-base text-white placeholder:text-white/40 focus:border-red-400 focus:ring-2 focus:ring-red-500/50 focus:outline-none"
-							type="text"
-							placeholder={m.display_name_placeholder()}
-							bind:value={displayName}
-						/>
-					</label>
-				{/if}
+					<input
+						class="mt-2 w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-base text-white placeholder:text-white/40 focus:border-red-400 focus:ring-2 focus:ring-red-500/50 focus:outline-none"
+						type="text"
+						placeholder={m.display_name_placeholder()}
+						bind:value={displayName}
+					/>
+				</label>
 
 				{#if errorMessage}
 					<p class="text-sm text-rose-300">{errorMessage}</p>

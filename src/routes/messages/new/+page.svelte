@@ -136,8 +136,8 @@
 	<title>{m.page_title_message_new()}</title>
 </svelte:head>
 
-<div class="min-h-screen bg-slate-50 px-4 py-6 sm:px-6">
-	<div class="mx-auto flex max-w-3xl flex-col gap-6">
+<div class="px-4 py-6 sm:px-6 lg:px-8">
+	<div class="mx-auto flex max-w-4xl flex-col gap-6">
 		<button
 			type="button"
 			class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-slate-900"

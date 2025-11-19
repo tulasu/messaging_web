@@ -6,7 +6,7 @@
 	"email_label": "E-mail",
 	"email_placeholder": "team@company.com",
 	"display_name_label": "Display name",
-	"display_name_placeholder": "Анна из поддержки",
+	"display_name_placeholder": "Отображаемое имя",
 	"display_name_toggle_show": "Указать",
 	"display_name_toggle_hide": "Скрыть",
 	"login_button": "Войти",
