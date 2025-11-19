@@ -28,3 +28,7 @@ src/lib/paraglide
 # IDEs
 .vscode/
 .idea/
+
+# inlang
+project.inlang/cache/
+project.inlang/project_id

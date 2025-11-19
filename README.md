@@ -1,38 +1,32 @@
-# sv
+# Messaging Web UI
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+SvelteKit клиент для сервиса рассылок (`messaging`). Интерфейс mobile-first, Tailwind 4.0 + формы/типографика, cookies-based auth.
 
-## Creating a project
+## Старт
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
+```bash
+pnpm install
+cp .env.example .env # задайте URL API
+pnpm dev
 ```
 
-## Developing
+`PUBLIC_API_BASE_URL` — полный URL Rust API. Клиент ходит с `credentials: include`, поэтому домен должен совпадать или поддерживать CORS+cookies.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Основные экраны
 
-```sh
-npm run dev
+- `GET /` — вход по e-mail + опциональный display_name. После логина сервер ставит `access_token`/`refresh_token`.
+- `/messages` — история пользователя. Пагинация ленивой загрузкой, карточки статусов.
+- `/messages/[id]` — детальная карточка + временная шкала попыток (`/messages/:id/attempts`).
+- `/messages/new` — создание сообщения: выбор подключенного мессенджера, пагинируемый список чатов, textarea.
+- `/integrations/connect` — управление токенами (`/messengers/tokens`).
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+401 на любом запросе триггерит фоновой `POST /auth/refresh`, после чего повторяется исходный запрос. Провал refresh → редирект на страницу входа.
 
-## Building
+## Скрипты
 
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+| Команда      | Назначение            |
+| ------------ | --------------------- |
+| `pnpm dev`   | dev-сервер SvelteKit  |
+| `pnpm lint`  | prettier + eslint     |
+| `pnpm check` | `svelte-check` + типы |
+| `pnpm build` | прод-бандел           |
